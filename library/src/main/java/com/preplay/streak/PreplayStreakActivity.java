@@ -39,6 +39,12 @@ public class PreplayStreakActivity extends Activity {
                 public void onPageFinished(WebView view, String url) {
                     CookieSyncManager.getInstance().sync();
                 }
+
+                @Override
+                public void onReceivedError(WebView view, int errorCode, String description,
+                        String failingUrl) {
+                    view.loadData("<b>Impossible to reach your destination</b>", "text/html; charset=UTF-8", null);
+                }
             });
         }
     }

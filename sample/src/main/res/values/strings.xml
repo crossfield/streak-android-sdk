@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">StreakSDK</string>
-    <string name="preplay_streak_app_id">landing</string>
+    <string name="preplay_streak_app_id">your_app_id</string>
 </resources>
