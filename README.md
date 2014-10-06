@@ -3,7 +3,17 @@
 This lightweight and open-source SDK implements a best-practices PrePlay Streak game integration.
 
 ## Overview
-  This SDK contains an Android Activity used to host a WebView pointing to your game.
+
+  This code repository will help you to integration a PrePlay Streak game into your Android application.
+  To use it, you must have an `app id` provided by PrePlay. If you don't have one, please get in touch at contact@preplaysports.com
+
+  The main goal of this repository is to simplify your life with the integration of a PrePlay Streak game.
+  So, to make it easy, this SDK contains an Android Activity used to host a WebView pointing to your game.
+  If you want, you can use your own implementation, it's not mandotory to use this one.
+
+  If you have any issue, be free to open an issue / pull request.
+
+  The code is located on https://github.com/preplay/streak-android-sdk
 
 ## Getting Started
 
