@@ -1,14 +1,18 @@
 package com.preplay.streak;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.webkit.CookieManager;
+import android.text.TextUtils;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class PreplayStreakActivity extends Activity {
+
+    private static final String GAMES_DOMAIN = ".streakit.preplaysports.com";
 
     private static String sAppId;
 
@@ -28,7 +32,12 @@ public class PreplayStreakActivity extends Activity {
         if (savedInstanceState != null) {
             mWebView.restoreState(savedInstanceState);
         } else {
-            mWebView.loadUrl(getUrlLandingPage());
+            String urlToLoadFirst = getUrlToLoadFirst(getIntent());
+            if (urlToLoadFirst == null) {
+                finish();
+                return;
+            }
+            mWebView.loadUrl(urlToLoadFirst);
             mWebView.setWebViewClient(new WebViewClient() {
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -43,9 +52,21 @@ public class PreplayStreakActivity extends Activity {
                 @Override
                 public void onReceivedError(WebView view, int errorCode, String description,
                         String failingUrl) {
-                    view.loadData("<b>Impossible to reach your destination</b>", "text/html; charset=UTF-8", null);
+                    view.loadData("<b>Impossible to reach your destination</b>",
+                            "text/html; charset=UTF-8", null);
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (mWebView != null) {
+            String urlToLoadFirst = getUrlToLoadFirst(intent);
+            if (urlToLoadFirst != null) {
+                mWebView.loadUrl(urlToLoadFirst);
+            }
         }
     }
 
@@ -64,19 +85,62 @@ public class PreplayStreakActivity extends Activity {
         }
     }
 
-    private String getUrlLandingPage() {
+    private String getUrlToLoadFirst(Intent intent) {
+        String appId = getAppId();
+        if (TextUtils.isEmpty(appId)) {
+            return null;
+        } else {
+            Uri intentData = intent.getData();
+            if (intentData != null) {
+                return getURLFromIntent(appId, intentData);
+            } else {
+                return getURLLanding(appId);
+            }
+        }
+    }
+
+    private String getAppId() {
         String appId = sAppId;
-        if (appId == null || appId.trim().length() == 0) {
-            int resId = getResources()
-                    .getIdentifier("preplay_streak_app_id", "string", getPackageName());
+        if (TextUtils.isEmpty(appId)) {
+            int resId = getResources().getIdentifier(
+                    "preplay_streak_app_id", "string", getPackageName());
             if (resId != 0) {
                 appId = getString(resId);
             }
         }
-        if (appId == null || appId.trim().length() == 0) {
-            return "http://preplay-share.s3.amazonaws.com/Streakgame/index.html";
-        } else {
-            return "http://" + appId + ".streakit.preplaysports.com";
+        return appId;
+    }
+
+    private String getURLLanding(String appId) {
+        StringBuffer urlBuffer = new StringBuffer("http://");
+        urlBuffer.append(appId);
+        urlBuffer.append(GAMES_DOMAIN);
+        return urlBuffer.toString();
+    }
+
+    private String getURLFromIntent(String appId, Uri intentData) {
+
+        int resId = getResources().getIdentifier(
+                "preplay_streak_scheme", "string", getPackageName());
+        if (resId == 0) {
+            return null;
         }
+
+        String scheme = getString(resId);
+        if (scheme == null || !scheme.equals(intentData.getScheme())) {
+            return null;
+        }
+
+        String host = intentData.getHost();
+        StringBuffer urlBuffer = new StringBuffer("http://");
+        if ("staging".equals(host)) {
+            urlBuffer.append("staging.");
+        } else if (host.length() > 0) {
+            return null;
+        }
+        urlBuffer.append(appId);
+        urlBuffer.append(GAMES_DOMAIN);
+        urlBuffer.append(intentData.getPath());
+        return urlBuffer.toString();
     }
 }
