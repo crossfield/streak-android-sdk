@@ -55,6 +55,15 @@ public class PreplayStreakActivity extends Activity {
         mWebView.saveState(outState);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private String getUrlLandingPage() {
         String appId = sAppId;
         if (appId == null || appId.trim().length() == 0) {
