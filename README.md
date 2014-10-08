@@ -28,12 +28,7 @@ This lightweight and open-source SDK implements a best-practices PrePlay Streak 
 
         <activity
                 android:name="com.preplay.streak.PreplayStreakActivity"
-                android:configChanges="keyboard|orientation|screenSize|screenLayout">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <data android:scheme="@string/preplay_streak_scheme"/>
-            </intent-filter>
-        </activity>
+                android:configChanges="keyboard|orientation|screenSize|screenLayout" />
 
   - Setup your game id by adding into your resources:
 
@@ -43,13 +38,31 @@ This lightweight and open-source SDK implements a best-practices PrePlay Streak 
 
         PreplayStreakActivity.setGameId("your_app_id")
 
-  - Add the deep link scheme into your resources: (you can choose this scheme, ask your PrePlay contact for more information about how to choose one)
-
-        <string name="preplay_streak_scheme">your_deep_link_scheme</string>
-
   - Launch this activity from your code by calling:
 
         startActivity(new Intent(this, PreplayStreakActivity.class));
+
+And that's it for the basic usage.
+
+### Deep-linking
+
+Your Streak game can also contains a deep-link in order to open a specific page from a website, a push notification…
+
+  - Modify your manifest to add the intent-filter:
+
+        <activity
+                android:name="com.preplay.streak.PreplayStreakActivity"
+                android:configChanges="keyboard|orientation|screenSize|screenLayout">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="@string/preplay_streak_scheme"/>
+            </intent-filter>
+        </activity>
+
+  - Add the deep link scheme into your resources: (you can choose your 'scheme', ask your PrePlay contact for more information about how to choose one)
+
+        <string name="preplay_streak_scheme">your_deep_link_scheme</string>
+
 
 ## Test the functionalities
 ### Deep Linking
