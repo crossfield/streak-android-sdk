@@ -4,23 +4,23 @@ This lightweight and open-source SDK implements a best-practices PrePlay Streak 
 
 ## Overview
 
-  This code repository will help you to integration a PrePlay Streak game into your Android application.
-  To use it, you must have an `app id` provided by PrePlay. If you don't have one, please get in touch at contact@preplaysports.com
+  This code repository will help you to integrate a PrePlay Streak game into your Android application.
+  To use it, you must have an `app id` provided by PrePlay. If you don't have one, please get in touch with us at contact@preplaysports.com
 
   The main goal of this repository is to simplify your life with the integration of a PrePlay Streak game.
   So, to make it easy, this SDK contains an Android Activity used to host a WebView pointing to your game.
   If you want, you can use your own implementation, it's not mandotory to use this one.
 
-  We also support the deeplinking to open your app directly to a specific page of the game.
+  We also support deeplinking to open your app directly to a specific page of the game.
 
-  If you have any issue, be free to open an issue / pull request.
+  If you have any issues, feel free to open an issue / pull request.
 
-  The code is located on https://github.com/preplay/streak-android-sdk
+  The code is located at https://github.com/preplay/streak-android-sdk
 
 ## Getting Started
 
   - Put the `streak_sdk_android_0.1.jar` into your "libs" folder
-  - Add into your manifest the INTERNET permission
+  - Add the INTERNET permission into your manifest
 
         <uses-permission android:name="android.permission.INTERNET" />
 
@@ -30,7 +30,7 @@ This lightweight and open-source SDK implements a best-practices PrePlay Streak 
                 android:name="com.preplay.streak.PreplayStreakActivity"
                 android:configChanges="keyboard|orientation|screenSize|screenLayout" />
 
-  - Setup your game id by adding into your resources:
+  - Setup your game id by adding your resources:
 
         <string name="preplay_streak_gameid">your_app_id</string>
 
@@ -46,7 +46,7 @@ And that's it for the basic usage.
 
 ### Deep-linking
 
-Your Streak game can also contains a deep-link in order to open a specific page from a website, a push notification…
+Your Streak game can also contain a deep-link in order to open a specific page from a website, a push notification etc.
 
   - Modify your manifest to add the intent-filter:
 
@@ -65,8 +65,8 @@ Your Streak game can also contains a deep-link in order to open a specific page 
 
 ### Custom error page
 
-If your user is not able to reach our website (due to a network error for example), you can specify your own error page.
-Add into your "assets" folder, a directory called "streak" and a file "error.html". This file will be auto-load by the SDK if an error occurred.
+If a user is not able to reach our website (due to a network error for example), you can specify your own error page.
+To do this, add a directory called "streak" and a file "error.html" into your "assets" folder. This file will auto-load by the SDK if an error occurrs.
 
 ## Test the functionalities
 ### Deep Linking
