@@ -20,7 +20,7 @@ This lightweight and open-source SDK implements a best-practices PrePlay Streak 
 ## Getting Started
 
   - Put the `streak_sdk_android_0.1.jar` into your "libs" folder
-  - Add the INTERNET permission into your manifest
+  - Add the INTERNET permission to your manifest
 
         <uses-permission android:name="android.permission.INTERNET" />
 
