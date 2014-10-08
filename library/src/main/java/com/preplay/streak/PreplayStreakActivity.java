@@ -2,17 +2,22 @@ package com.preplay.streak;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
-public class PreplayStreakActivity extends Activity {
+public class PreplayStreakActivity extends Activity implements View.OnClickListener {
 
     private static final String GAMES_DOMAIN = ".streakit.preplaysports.com";
+
+    private static final String GAMES_DOMAIN_STAGING = ".streakit-staging.preplaysports.com";
 
     private static String sAppId;
 
@@ -22,11 +27,23 @@ public class PreplayStreakActivity extends Activity {
 
     private WebView mWebView;
 
+    private View mViewClickToRefreshFailingURL;
+
+    private String mLastFailingURL;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FrameLayout mainView = new FrameLayout(this);
         mWebView = new WebView(this);
-        setContentView(mWebView);
+        mViewClickToRefreshFailingURL = new View(this);
+        mainView.addView(mWebView);
+        mainView.addView(mViewClickToRefreshFailingURL);
+        setContentView(mainView);
+
+        mViewClickToRefreshFailingURL.setOnClickListener(this);
+        mViewClickToRefreshFailingURL.setVisibility(View.GONE);
+
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         if (savedInstanceState != null) {
@@ -39,6 +56,16 @@ public class PreplayStreakActivity extends Activity {
             }
             mWebView.loadUrl(urlToLoadFirst);
             mWebView.setWebViewClient(new WebViewClient() {
+
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                    super.onPageStarted(view, url, favicon);
+                    if (url != null && url.startsWith("http")) {
+                        mLastFailingURL = null;
+                        mViewClickToRefreshFailingURL.setVisibility(View.GONE);
+                    }
+                }
+
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     view.loadUrl(url);
@@ -52,7 +79,10 @@ public class PreplayStreakActivity extends Activity {
                 @Override
                 public void onReceivedError(WebView view, int errorCode, String description,
                         String failingUrl) {
-                    view.loadData("<b>Impossible to reach your destination</b>",
+                    mLastFailingURL = failingUrl;
+                    mViewClickToRefreshFailingURL.setVisibility(View.VISIBLE);
+                    view.loadData(
+                            "<center><b>Impossible to reach your destination,<br />Check your connection and click here to retry</b><center>",
                             "text/html; charset=UTF-8", null);
                 }
             });
@@ -133,14 +163,22 @@ public class PreplayStreakActivity extends Activity {
 
         String host = intentData.getHost();
         StringBuffer urlBuffer = new StringBuffer("http://");
+        urlBuffer.append(appId);
         if ("staging".equals(host)) {
-            urlBuffer.append("staging.");
-        } else if (host.length() > 0) {
+            urlBuffer.append(GAMES_DOMAIN_STAGING);
+        } else if (host.length() == 0) {
+            urlBuffer.append(GAMES_DOMAIN);
+        } else {
             return null;
         }
-        urlBuffer.append(appId);
-        urlBuffer.append(GAMES_DOMAIN);
         urlBuffer.append(intentData.getPath());
         return urlBuffer.toString();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(mViewClickToRefreshFailingURL) && mLastFailingURL != null) {
+            mWebView.loadUrl(mLastFailingURL);
+        }
     }
 }
