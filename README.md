@@ -46,7 +46,7 @@ And that's it for the basic usage.
 
 ### Deep-linking
 
-Your Streak game can also contain a deep-link in order to open a specific page from a website, a push notification etc.
+The Streak game can also contain a deep-link in order to open a specific page from a website, a push notification etc.
 
   - Modify your manifest to add the intent-filter:
 
