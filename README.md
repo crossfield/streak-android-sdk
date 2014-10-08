@@ -63,6 +63,10 @@ Your Streak game can also contains a deep-link in order to open a specific page 
 
         <string name="preplay_streak_scheme">your_deep_link_scheme</string>
 
+### Custom error page
+
+If your user is not able to reach our website (due to a network error for example), you can specify your own error page.
+Add into your "assets" folder, a directory called "streak" and a file "error.html". This file will be auto-load by the SDK if an error occurred.
 
 ## Test the functionalities
 ### Deep Linking

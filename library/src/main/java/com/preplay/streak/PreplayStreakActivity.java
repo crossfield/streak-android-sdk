@@ -13,6 +13,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class PreplayStreakActivity extends Activity implements View.OnClickListener {
 
     private static final String GAMES_DOMAIN = ".streakit.preplaysports.com";
@@ -30,6 +36,8 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
     private View mViewClickToRefreshFailingURL;
 
     private String mLastFailingURL;
+
+    private String mErrorHTML;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +89,7 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
                         String failingUrl) {
                     mLastFailingURL = failingUrl;
                     mViewClickToRefreshFailingURL.setVisibility(View.VISIBLE);
-                    view.loadData(
-                            "<center><b>Impossible to reach your destination,<br />Check your connection and click here to retry</b><center>",
-                            "text/html; charset=UTF-8", null);
+                    view.loadData(getErrorHTML(), "text/html; charset=UTF-8", null);
                 }
             });
         }
@@ -112,6 +118,13 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
             mWebView.goBack();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(mViewClickToRefreshFailingURL) && mLastFailingURL != null) {
+            mWebView.loadUrl(mLastFailingURL);
         }
     }
 
@@ -175,10 +188,32 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
         return urlBuffer.toString();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.equals(mViewClickToRefreshFailingURL) && mLastFailingURL != null) {
-            mWebView.loadUrl(mLastFailingURL);
+    private String getErrorHTML() {
+        if (mErrorHTML == null) {
+            loadErrorHTMLFromAssets();
+            if(TextUtils.isEmpty(mErrorHTML)) {
+                mErrorHTML
+                        = "<center><b>Impossible to reach your destination,<br />Check your connection and click here to retry</b></center>";
+            }
+        }
+        return mErrorHTML;
+    }
+
+    private void loadErrorHTMLFromAssets() {
+        try {
+            StringBuilder buf = new StringBuilder();
+            InputStream json = getAssets().open("streak/error.html");
+            BufferedReader in = new BufferedReader(new InputStreamReader(json, "UTF-8"));
+            String str;
+            while ((str = in.readLine()) != null) {
+                buf.append(str);
+            }
+            in.close();
+            mErrorHTML = buf.toString();
+        } catch (FileNotFoundException e) {
+            mErrorHTML = null;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
