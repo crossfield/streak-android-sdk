@@ -59,7 +59,7 @@ Your Streak game can also contain a deep-link in order to open a specific page f
             </intent-filter>
         </activity>
 
-  - Add the deep link scheme into your resources: (you can choose your 'scheme', ask your PrePlay contact for more information about how to choose one)
+  - Add the deep link scheme into your resources: (you can choose your 'scheme' or ask your PrePlay contact for more information about how to choose one)
 
         <string name="preplay_streak_scheme">your_deep_link_scheme</string>
 
