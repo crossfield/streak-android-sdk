@@ -9,7 +9,7 @@ This lightweight and open-source SDK implements a best-practices PrePlay Streak 
 
   The main goal of this repository is to simplify your life with the integration of a PrePlay Streak game.
   So, to make it easy, this SDK contains an Android Activity used to host a WebView pointing to the streak game.
-  If you want, you can use your own implementation, it's not mandotory to use this one.
+  If you want, you can use your own implementation, it's not mandatory to use this one.
 
   We also support deeplinking to open your app directly to a specific page of the game.
 
