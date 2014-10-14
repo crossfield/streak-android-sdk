@@ -23,7 +23,7 @@ task makeJar(type: Copy) {
     from('build/intermediates/bundles/release/')
     into('../')
     include('classes.jar')
-    rename ('classes.jar', 'streak_sdk_android_0.1.jar')
+    rename ('classes.jar', 'streak_sdk_android_0.2.jar')
 }
 
 makeJar.dependsOn(build)

@@ -77,6 +77,17 @@ To do this, add a directory called "streak" and a file "error.html" into your "a
 ## Example Usage
   You can look at a sample integration of the SDK in the sample/ subdirectory
 
+### Change Log
+
+#### 0.2 (2014-10-14)
+Features:
+
+- Adding native sharing
+- Default landing page to our integration test page
+
+#### 0.1 (2014-10-08)
+- Initial release
+
 ## License
 
 * [MIT](http://opensource.org/licenses/MIT)
