@@ -131,15 +131,15 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
     private String getUrlToLoadFirst(Intent intent) {
         String appId = getAppId();
         if (TextUtils.isEmpty(appId)) {
-            return null;
-        } else {
-            Uri intentData = intent.getData();
-            if (intentData != null) {
-                return getURLFromIntent(appId, intentData);
-            } else {
-                return getURLLanding(appId);
-            }
+            return getURLLanding("test")+"/integration_test.html";
         }
+        Uri intentData = intent.getData();
+        if (intentData != null) {
+            return getURLFromIntent(appId, intentData);
+        } else {
+            return getURLLanding(appId);
+        }
+
     }
 
     private String getAppId() {
@@ -191,7 +191,7 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
     private String getErrorHTML() {
         if (mErrorHTML == null) {
             loadErrorHTMLFromAssets();
-            if(TextUtils.isEmpty(mErrorHTML)) {
+            if (TextUtils.isEmpty(mErrorHTML)) {
                 mErrorHTML
                         = "<center><b>Impossible to reach your destination,<br />Check your connection and click here to retry</b></center>";
             }

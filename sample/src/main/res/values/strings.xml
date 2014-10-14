@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">StreakSDK</string>
-    <string name="preplay_streak_app_id">your_app_id</string>
-    <string name="preplay_streak_scheme">your_deep_link_scheme</string>
+    <string name="preplay_streak_app_id"></string>
+    <string name="preplay_streak_scheme"></string>
 </resources>
