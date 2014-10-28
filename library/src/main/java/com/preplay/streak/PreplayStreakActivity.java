@@ -2,6 +2,8 @@ package com.preplay.streak;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PreplayStreakActivity extends Activity implements View.OnClickListener {
 
@@ -62,7 +66,7 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
                 finish();
                 return;
             }
-            mWebView.loadUrl(urlToLoadFirst);
+            mWebView.loadUrl(urlToLoadFirst, getHeadersId());
             mWebView.addJavascriptInterface(new StreakSDKInterface(this), "StreakSDK");
             mWebView.setWebViewClient(new WebViewClient() {
 
@@ -132,7 +136,7 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
     private String getUrlToLoadFirst(Intent intent) {
         String appId = getAppId();
         if (TextUtils.isEmpty(appId)) {
-            return getURLLanding("test")+"/integration_test.html";
+            return getURLLanding("test") + "/integration_test.html";
         }
         Uri intentData = intent.getData();
         if (intentData != null) {
@@ -216,5 +220,19 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Map<String, String> getHeadersId() {
+        Map<String, String> map = new HashMap<String, String>();
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            map.put("X-Streak-Embedded-In-Version", packageInfo.versionName);
+            map.put("X-Streak-Embedded-In-Build", Integer.toString(packageInfo.versionCode));
+            map.put("X-Streak-Embedded-In-App", packageInfo.packageName);
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        map.put("X-Streak-Platform", "android");
+        map.put("X-Streak-Version", com.preplay.streak.BuildConfig.VERSION_NAME);
+        return map;
     }
 }
