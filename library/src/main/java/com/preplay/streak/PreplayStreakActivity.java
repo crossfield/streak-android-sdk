@@ -63,7 +63,7 @@ public class PreplayStreakActivity extends Activity implements View.OnClickListe
                 return;
             }
             mWebView.loadUrl(urlToLoadFirst);
-            mWebView.addJavascriptInterface(new ShareInterface(this), "NativeApp");
+            mWebView.addJavascriptInterface(new StreakSDKInterface(this), "StreakSDK");
             mWebView.setWebViewClient(new WebViewClient() {
 
                 @Override

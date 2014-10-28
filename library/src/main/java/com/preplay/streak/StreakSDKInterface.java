@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
-public class ShareInterface {
+public class StreakSDKInterface {
 
     private Context mContext;
 
-    public ShareInterface(Context context) {
+    public StreakSDKInterface(Context context) {
         mContext = context;
     }
 
