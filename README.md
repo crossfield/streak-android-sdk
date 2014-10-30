@@ -32,11 +32,11 @@ This lightweight and open-source SDK implements a best-practices PrePlay Streak 
 
   - Setup your game id by adding your resources:
 
-        <string name="preplay_streak_gameid">your_app_id</string>
+        <string name="preplay_streak_app_id">your_app_id</string>
 
   **or** from your code by calling:
 
-        PreplayStreakActivity.setGameId("your_app_id")
+        PreplayStreakActivity.setAppId("your_app_id")
 
   - Launch this activity from your code by calling:
 
